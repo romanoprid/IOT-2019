@@ -12,34 +12,34 @@ class Matrix
 private:
     double M[m];
 public:
-    friend void InputArray(Matrix Arr[]);
-    friend void OutputArray(Matrix Arr[]);
-    friend void SortArray(Matrix  Arr[]);
-    void CalcArray(Matrix Arr[]);
+    friend void inputArray(Matrix Array[]);
+    friend void outputArray(Matrix Array[]);
+    friend void sortArray(Matrix  Array[]);
+    void calcArray(Matrix Array[]);
 };
 
-void InputArray(Matrix  Arr[])
+void inputArray(Matrix  Array[])
 {
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
+    for (int row = 0; row < n; ++row)
+        for (int column = 0; column < m; ++column)
         {
-            cin >> Arr[i].M[j];
+            cin >> Array[row].M[column];
         }
 }
-void OutputArray(Matrix  Arr[])
+void outputArray(Matrix  Array[])
 {
-    for (int i = 0; i < n; ++i)
+    for (int row = 0; row < n; ++row)
     {
-        for (int j = 0; j < m; ++j)
+        for (int column = 0; column < m; ++column)
         {
-            cout << Arr[j].M[i] << "\t";
+            cout << Array[column].M[row] << "\t";
         }
         cout << endl;
     }
 }
-void SortArray(Matrix  arr[])
+void sortArray(Matrix  array[])
 {
-    for (int i = 0; i < n; i++)
+    for (int row = 0; row < n; row++)
     {
         for (int BlockSizeIterator = 1; BlockSizeIterator < n; BlockSizeIterator *= 2)
         {
@@ -55,31 +55,31 @@ void SortArray(Matrix  arr[])
 
                 while (LeftBorder + LeftBlockIterator < MidBorder && MidBorder + RightBlockIterator < RightBorder)
                 {
-                    if (arr[LeftBorder + LeftBlockIterator].M[i] < arr[MidBorder + RightBlockIterator].M[i])
+                    if (array[LeftBorder + LeftBlockIterator].M[row] < array[MidBorder + RightBlockIterator].M[row])
                     {
-                        SortedBlock[LeftBlockIterator + RightBlockIterator] = arr[LeftBorder + LeftBlockIterator].M[i];
+                        SortedBlock[LeftBlockIterator + RightBlockIterator] = array[LeftBorder + LeftBlockIterator].M[row];
                         LeftBlockIterator++;
                     }
                     else
                     {
-                        SortedBlock[LeftBlockIterator + RightBlockIterator] = arr[MidBorder + RightBlockIterator].M[i];
+                        SortedBlock[LeftBlockIterator + RightBlockIterator] = array[MidBorder + RightBlockIterator].M[row];
                         RightBlockIterator++;
                     }
                 }
                 while (LeftBorder + LeftBlockIterator < MidBorder)
                 {
-                    SortedBlock[LeftBlockIterator + RightBlockIterator] = arr[LeftBorder + LeftBlockIterator].M[i];
+                    SortedBlock[LeftBlockIterator + RightBlockIterator] = array[LeftBorder + LeftBlockIterator].M[row];
                     LeftBlockIterator++;
                 }
                 while (MidBorder + RightBlockIterator < RightBorder)
                 {
-                    SortedBlock[LeftBlockIterator + RightBlockIterator] = arr[MidBorder + RightBlockIterator].M[i];
+                    SortedBlock[LeftBlockIterator + RightBlockIterator] = array[MidBorder + RightBlockIterator].M[row];
                     RightBlockIterator++;
                 }
 
                 for (int MergeIterator = 0; MergeIterator < LeftBlockIterator + RightBlockIterator; MergeIterator++)
                 {
-                    arr[LeftBorder + MergeIterator].M[i] = SortedBlock[MergeIterator];
+                    array[LeftBorder + MergeIterator].M[row] = SortedBlock[MergeIterator];
                 }
                 delete SortedBlock;
 
@@ -88,23 +88,23 @@ void SortArray(Matrix  arr[])
         }
     }
 }
-void Matrix::CalcArray(Matrix Arr[]) {
-    double SumPidDia[n] = {0, 0, 0, 0, 0};
-    for(int j = 0; j < n; j++) {
-        for(int i = n; i > n-j-1; i--) {
-            SumPidDia[i]+=(Arr[i].M[j]);
+void Matrix::calcArray(Matrix Array[]) {
+    double sumUnderDiagonal[n] = {0, 0, 0, 0, 0};
+    for(int column = 0; column < n; column++) {
+        for(int row = n; row > n-column-1; row--) {
+            sumUnderDiagonal[row]+=(Array[row].M[column]);
         }
 
     }
     double haunt = 1;
-    for (int i = 1; i < n; i++) {
-        haunt *= -1*pow(fabs(SumPidDia[i]), 1.0/4.0L);
-        std::cout << "f(" << i << "): " << SumPidDia[i] << std::endl;
+    for (int row = 1; row < n; row++) {
+        haunt *= -1*pow(fabs(sumUnderDiagonal[row]), 1.0/4.0L);
+        std::cout << "f(" << row << "): " << sumUnderDiagonal[row] << std::endl;
     }
 
 
 
-    cout << "F(f(ij)): " << haunt << endl;
+    cout << "F(f(rowcolumn)): " << haunt << endl;
 
 
 }
@@ -115,13 +115,13 @@ int main()
 {
     Matrix  Array[n];
     cout << "Enter elements of matrix:\n" << endl;
-    InputArray(Array);
+    inputArray(Array);
     cout << "\nYour matrix:\n" << endl;
-    OutputArray(Array);
-    SortArray(Array);
+    outputArray(Array);
+    sortArray(Array);
     cout << "\nSorted matrix:\n" << endl;
-    OutputArray(Array);
+    outputArray(Array);
     cout << "\nCalculations:\n" << endl;
-    Array->CalcArray(Array);
+    Array->calcArray(Array);
 }
 
